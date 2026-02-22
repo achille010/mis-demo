@@ -1,0 +1,1513 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --border: #bdc3c7;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Login Container */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0 30px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .brand-text h2 {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .brand-text p {
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-details {
+            text-align: right;
+        }
+
+        .user-details .name {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .user-details .role {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            position: fixed;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            padding: 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            background: #f5f7fa;
+            min-height: calc(100vh - 70px);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .content-header h1 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--accent);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.students {
+            border-top-color: var(--success);
+        }
+
+        .stat-card.schools {
+            border-top-color: var(--warning);
+        }
+
+        .stat-card.system {
+            border-top-color: var(--danger);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-title {
+            font-size: 14px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+        }
+
+        .stat-card.students .stat-icon {
+            background: var(--success);
+        }
+
+        .stat-card.schools .stat-icon {
+            background: var(--warning);
+        }
+
+        .stat-card.system .stat-icon {
+            background: var(--danger);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-subtext {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* Content Cards */
+        .content-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .card-header h3 {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table thead {
+            background-color: #f8f9fa;
+        }
+
+        .data-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid var(--light);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--light);
+            color: #555;
+        }
+
+        .data-table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-section {
+            display: none;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .form-section h4 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .empty-state h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        .dashboard-footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 13px;
+            border-top: 1px solid var(--light);
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .top-nav {
+                padding: 0 15px;
+            }
+            
+            .user-details {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>School Management System</h1>
+                <p>Enter your credentials to access the dashboard</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Enter username" value="admin" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter password" value="admin123" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                
+                <div id="loginMessage" class="alert"></div>
+                
+                <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--light);">
+                    <p style="font-size: 13px; color: var(--gray); text-align: center;">
+                        <strong>Demo Credentials:</strong> Username: admin | Password: admin123
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard-container" id="dashboardScreen">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="brand">
+                <div class="brand-logo">SMS</div>
+                <div class="brand-text">
+                    <h2>School Management System</h2>
+                    <p>Comprehensive Education Administration Platform</p>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-details">
+                    <div class="name" id="userName">Administrator</div>
+                    <div class="role" id="userRole">System Administrator</div>
+                </div>
+                <button class="btn btn-danger" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="showSection('dashboard')">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('students')">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Student Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('schools')">
+                        <i class="fas fa-school"></i>
+                        <span>School Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('reports')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showSection('system')">
+                        <i class="fas fa-cog"></i>
+                        <span>System Configuration</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="content-section">
+                <div class="content-header">
+                    <h1>System Dashboard</h1>
+                    <div class="status-indicator" id="systemStatus">
+                        <i class="fas fa-circle"></i>
+                        <span>Checking system status...</span>
+                    </div>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="stats-grid">
+                    <div class="stat-card students">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Students</div>
+                            <div class="stat-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="studentCount">0</div>
+                        <div class="stat-subtext">Registered in the system</div>
+                    </div>
+
+                    <div class="stat-card schools">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Schools</div>
+                            <div class="stat-icon">
+                                <i class="fas fa-school"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="schoolCount">0</div>
+                        <div class="stat-subtext">Active institutions</div>
+                    </div>
+
+                    <div class="stat-card system">
+                        <div class="stat-header">
+                            <div class="stat-title">Database Status</div>
+                            <div class="stat-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="dbStatus">Inactive</div>
+                        <div class="stat-subtext" id="dbSubtext">Connection status</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="showSection('students'); showAddStudentForm();">
+                            <i class="fas fa-plus-circle"></i> Add New Student
+                        </button>
+                        <button class="btn btn-primary" onclick="showSection('schools'); showAddSchoolForm();">
+                            <i class="fas fa-plus-circle"></i> Register New School
+                        </button>
+                        <button class="btn" onclick="refreshDashboard()" style="background: var(--light); color: var(--dark);">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Recent System Activity</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Activity</th>
+                                <th>User</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityLog">
+                            <tr>
+                                <td>Just now</td>
+                                <td>User login successful</td>
+                                <td id="currentUserCell">Administrator</td>
+                                <td><span style="color: var(--success);">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Students Section -->
+            <div id="studentsSection" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1>Student Management</h1>
+                    <button class="btn btn-primary" onclick="showAddStudentForm()">
+                        <i class="fas fa-plus-circle"></i> Add Student
+                    </button>
+                </div>
+
+                <!-- Add Student Form -->
+                <div id="addStudentForm" class="form-section">
+                    <h4>Register New Student</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="studentName" class="form-control" placeholder="Enter student's full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="studentEmail" class="form-control" placeholder="Enter valid email address">
+                        </div>
+                        <div class="form-group">
+                            <label>Admission Number</label>
+                            <input type="text" id="studentAdmission" class="form-control" placeholder="Enter admission number">
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="addStudent()">
+                            <i class="fas fa-save"></i> Save Student
+                        </button>
+                        <button class="btn" onclick="hideAddStudentForm()" style="background: var(--light); color: var(--dark);">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Students List -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Student Registry</h3>
+                        <div style="color: var(--gray); font-size: 14px;">
+                            Total: <span id="totalStudents">0</span> students
+                        </div>
+                    </div>
+                    
+                    <div id="studentsTable">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Admission No.</th>
+                                    <th>Full Name</th>
+                                    <th>Email Address</th>
+                                    <th>Date Registered</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsList">
+                                <!-- Students will be loaded here -->
+                            </tbody>
+                        </table>
+                        
+                        <div id="noStudents" class="empty-state">
+                            <i class="fas fa-user-graduate"></i>
+                            <h4>No Students Found</h4>
+                            <p>No students have been registered yet. Click "Add Student" to begin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schools Section -->
+            <div id="schoolsSection" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1>School Management</h1>
+                    <button class="btn btn-primary" onclick="showAddSchoolForm()">
+                        <i class="fas fa-plus-circle"></i> Add School
+                    </button>
+                </div>
+
+                <!-- Add School Form -->
+                <div id="addSchoolForm" class="form-section">
+                    <h4>Register New School</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>School Name</label>
+                            <input type="text" id="schoolName" class="form-control" placeholder="Enter school name">
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" id="schoolAddress" class="form-control" placeholder="Enter complete address">
+                        </div>
+                        <div class="form-group">
+                            <label>Principal Name</label>
+                            <input type="text" id="schoolPrincipal" class="form-control" placeholder="Enter principal's name">
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Email</label>
+                            <input type="email" id="schoolEmail" class="form-control" placeholder="Enter contact email">
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="addSchool()">
+                            <i class="fas fa-save"></i> Save School
+                        </button>
+                        <button class="btn" onclick="hideAddSchoolForm()" style="background: var(--light); color: var(--dark);">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Schools List -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>School Directory</h3>
+                        <div style="color: var(--gray); font-size: 14px;">
+                            Total: <span id="totalSchools">0</span> schools
+                        </div>
+                    </div>
+                    
+                    <div id="schoolsTable">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>School Name</th>
+                                    <th>Address</th>
+                                    <th>Principal</th>
+                                    <th>Contact Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schoolsList">
+                                <!-- Schools will be loaded here -->
+                            </tbody>
+                        </table>
+                        
+                        <div id="noSchools" class="empty-state">
+                            <i class="fas fa-school"></i>
+                            <h4>No Schools Found</h4>
+                            <p>No schools have been registered yet. Click "Add School" to begin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div id="reportsSection" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1>Reports & Analytics</h1>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>System Statistics</h3>
+                        <button class="btn" onclick="generateReport()" style="background: var(--light); color: var(--dark);">
+                            <i class="fas fa-download"></i> Export Report
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+                        <div>
+                            <h4 style="margin-bottom: 20px; color: var(--primary);">Data Overview</h4>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: var(--radius);">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--light);">
+                                    <span>Total Students:</span>
+                                    <strong id="reportStudentCount">0</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--light);">
+                                    <span>Total Schools:</span>
+                                    <strong id="reportSchoolCount">0</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--light);">
+                                    <span>Database Status:</span>
+                                    <strong id="reportDbStatus">Inactive</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Last Updated:</span>
+                                    <strong id="reportLastUpdated">--</strong>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 style="margin-bottom: 20px; color: var(--primary);">System Health</h4>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: var(--radius);">
+                                <div style="margin-bottom: 20px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>API Connection:</span>
+                                        <span id="apiStatus">Checking...</span>
+                                    </div>
+                                    <div style="height: 8px; background: var(--light); border-radius: 4px; overflow: hidden;">
+                                        <div id="apiBar" style="height: 100%; width: 0%; background: var(--success); transition: width 0.5s;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>Database Connection:</span>
+                                        <span id="dbConnectionStatus">Checking...</span>
+                                    </div>
+                                    <div style="height: 8px; background: var(--light); border-radius: 4px; overflow: hidden;">
+                                        <div id="dbBar" style="height: 100%; width: 0%; background: var(--danger); transition: width 0.5s;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>System Performance:</span>
+                                        <span id="performanceStatus">Checking...</span>
+                                    </div>
+                                    <div style="height: 8px; background: var(--light); border-radius: 4px; overflow: hidden;">
+                                        <div id="performanceBar" style="height: 100%; width: 0%; background: var(--warning); transition: width 0.5s;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Section -->
+            <div id="systemSection" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1>System Configuration</h1>
+                </div>
+
+                <div class="content-card">
+                    <h3 style="margin-bottom: 25px;">Database Configuration</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h4 style="margin-bottom: 15px; color: var(--primary);">Connection Details</h4>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: var(--radius);">
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-size: 13px; color: var(--gray);">Connection String</label>
+                                    <div style="padding: 10px; background: white; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 13px;">
+                                        mongodb://localhost:27017/school-mis
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; margin-bottom: 5px; font-size: 13px; color: var(--gray);">Current Status</label>
+                                    <div id="configStatus" style="padding: 10px; border-radius: 6px; background: #f8d7da; color: #721c24; font-weight: 500;">
+                                        Disconnected
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                    <button class="btn" onclick="testDatabaseConnection()" style="background: var(--light); color: var(--dark);">
+                                        <i class="fas fa-plug"></i> Test Connection
+                                    </button>
+                                    <button class="btn btn-primary" onclick="reconnectDatabase()">
+                                        <i class="fas fa-redo"></i> Reconnect
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 style="margin-bottom: 15px; color: var(--primary);">System Information</h4>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: var(--radius);">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--light);">
+                                    <span>Application Version:</span>
+                                    <strong>1.0.0</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--light);">
+                                    <span>Node.js Version:</span>
+                                    <strong id="nodeVersion">--</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--light);">
+                                    <span>Server Uptime:</span>
+                                    <strong id="serverUptime">--</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Last Database Sync:</span>
+                                    <strong id="lastSync">--</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="dashboard-footer">
+                <p>School Management System &copy; 2024 | Version 1.0.0 | For demonstration purposes only</p>
+                <p style="margin-top: 5px; font-size: 12px; color: #aaa;">
+                    Built with Node.js, Express, MongoDB | Presentation Ready
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Configuration
+        const API_URL = 'http://localhost:3000/api/v1';
+        let token = localStorage.getItem('token') || '';
+        let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        let currentSection = 'dashboard';
+
+        // ========== AUTHENTICATION ==========
+        async function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const messageDiv = document.getElementById('loginMessage');
+
+            if (!username || !password) {
+                showMessage(messageDiv, 'Please enter both username and password', 'error');
+                return;
+            }
+
+            showMessage(messageDiv, 'Authenticating...', 'success');
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (!response.ok) throw new Error('Authentication failed');
+
+                const data = await response.json();
+
+                if (data.success && data.token) {
+                    token = data.token;
+                    currentUser = data.user;
+                    
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+
+                    showMessage(messageDiv, 'Authentication successful. Redirecting...', 'success');
+                    
+                    setTimeout(() => {
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('dashboardScreen').style.display = 'block';
+                        document.getElementById('userName').textContent = currentUser.username;
+                        document.getElementById('userRole').textContent = 'Administrator';
+                        document.getElementById('currentUserCell').textContent = currentUser.username;
+                        
+                        loadDashboard();
+                    }, 1000);
+                } else {
+                    showMessage(messageDiv, data.error || 'Authentication failed', 'error');
+                }
+            } catch (error) {
+                showMessage(messageDiv, 'Connection error. Please ensure the backend server is running on port 3000', 'error');
+                console.error('Login error:', error);
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch(`${API_URL}/auth/logout`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+            } catch (error) {
+                console.warn('Logout API call failed:', error);
+            }
+
+            // Clear all data
+            token = '';
+            currentUser = {};
+            localStorage.clear();
+
+            // Switch to login screen
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin123';
+            
+            const messageDiv = document.getElementById('loginMessage');
+            showMessage(messageDiv, 'You have been successfully logged out', 'success');
+        }
+
+        // ========== DASHBOARD FUNCTIONS ==========
+        async function loadDashboard() {
+            try {
+                // Update user info
+                document.getElementById('userName').textContent = currentUser.username || 'Administrator';
+                
+                // Load stats
+                const statsResponse = await fetch(`${API_URL}/stats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (statsResponse.ok) {
+                    const stats = await statsResponse.json();
+                    document.getElementById('studentCount').textContent = stats.students || '0';
+                    document.getElementById('schoolCount').textContent = stats.schools || '0';
+                    document.getElementById('dbStatus').textContent = stats.mongoStatus === 'connected' ? 'Active' : 'Inactive';
+                    document.getElementById('dbSubtext').textContent = stats.source === 'mongodb' ? 'Persistent storage' : 'In-memory storage';
+                    
+                    // Update report section
+                    document.getElementById('reportStudentCount').textContent = stats.students || '0';
+                    document.getElementById('reportSchoolCount').textContent = stats.schools || '0';
+                    document.getElementById('reportDbStatus').textContent = stats.mongoStatus === 'connected' ? 'Connected' : 'Disconnected';
+                    document.getElementById('reportLastUpdated').textContent = new Date().toLocaleTimeString();
+                }
+
+                // Check system health
+                await checkSystemHealth();
+
+                // Load initial data
+                loadStudents();
+                loadSchools();
+
+            } catch (error) {
+                console.error('Dashboard load error:', error);
+            }
+        }
+
+        async function refreshDashboard() {
+            showActivity('Data refresh initiated', 'system');
+            await loadDashboard();
+            showActivity('Data refresh completed', 'system');
+        }
+
+        // ========== SECTION MANAGEMENT ==========
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName + 'Section').style.display = 'block';
+            
+            // Update active nav link
+            document.querySelector(`.nav-link[onclick*="${sectionName}"]`).classList.add('active');
+            
+            currentSection = sectionName;
+            
+            // Load section-specific data
+            if (sectionName === 'students') {
+                loadStudents();
+            } else if (sectionName === 'schools') {
+                loadSchools();
+            } else if (sectionName === 'reports') {
+                updateReportSection();
+            } else if (sectionName === 'system') {
+                updateSystemInfo();
+            }
+        }
+
+        // ========== STUDENT MANAGEMENT ==========
+        function showAddStudentForm() {
+            document.getElementById('addStudentForm').style.display = 'block';
+            document.getElementById('studentName').focus();
+        }
+
+        function hideAddStudentForm() {
+            document.getElementById('addStudentForm').style.display = 'none';
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentEmail').value = '';
+            document.getElementById('studentAdmission').value = '';
+        }
+
+        async function addStudent() {
+            const name = document.getElementById('studentName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim();
+            const admission = document.getElementById('studentAdmission').value.trim();
+
+            if (!name || !email || !admission) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/students`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ 
+                        name, 
+                        email, 
+                        admissionNumber: admission 
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to add student');
+
+                const student = await response.json();
+                
+                showActivity(`Student "${name}" added successfully`, 'success');
+                hideAddStudentForm();
+                loadStudents();
+                loadDashboard();
+                
+            } catch (error) {
+                alert('Error adding student: ' + error.message);
+                showActivity(`Failed to add student: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadStudents() {
+            try {
+                const response = await fetch(`${API_URL}/students`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load students');
+
+                const students = await response.json();
+                const tbody = document.getElementById('studentsList');
+                const noStudents = document.getElementById('noStudents');
+                const totalStudents = document.getElementById('totalStudents');
+
+                totalStudents.textContent = students.length || '0';
+
+                if (students.length === 0) {
+                    tbody.innerHTML = '';
+                    noStudents.style.display = 'block';
+                    return;
+                }
+
+                noStudents.style.display = 'none';
+                tbody.innerHTML = students.map(student => `
+                    <tr>
+                        <td><strong>${student.admissionNumber || 'N/A'}</strong></td>
+                        <td>${student.name || 'N/A'}</td>
+                        <td>${student.email || 'N/A'}</td>
+                        <td>${student.createdAt ? new Date(student.createdAt).toLocaleDateString() : 'N/A'}</td>
+                        <td>
+                            <button style="padding: 5px 10px; background: var(--light); border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading students:', error);
+                showActivity('Failed to load student data', 'error');
+            }
+        }
+
+        // ========== SCHOOL MANAGEMENT ==========
+        function showAddSchoolForm() {
+            document.getElementById('addSchoolForm').style.display = 'block';
+            document.getElementById('schoolName').focus();
+        }
+
+        function hideAddSchoolForm() {
+            document.getElementById('addSchoolForm').style.display = 'none';
+            document.getElementById('schoolName').value = '';
+            document.getElementById('schoolAddress').value = '';
+            document.getElementById('schoolPrincipal').value = '';
+            document.getElementById('schoolEmail').value = '';
+        }
+
+        async function addSchool() {
+            const name = document.getElementById('schoolName').value.trim();
+            const address = document.getElementById('schoolAddress').value.trim();
+            const principal = document.getElementById('schoolPrincipal').value.trim();
+            const email = document.getElementById('schoolEmail').value.trim();
+
+            if (!name || !address || !principal) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/schools`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ 
+                        name, 
+                        address, 
+                        principalName: principal,
+                        email: email || `info@${name.toLowerCase().replace(/\s+/g, '')}.edu`
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to add school');
+
+                const school = await response.json();
+                
+                showActivity(`School "${name}" registered successfully`, 'success');
+                hideAddSchoolForm();
+                loadSchools();
+                loadDashboard();
+                
+            } catch (error) {
+                alert('Error adding school: ' + error.message);
+                showActivity(`Failed to register school: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadSchools() {
+            try {
+                const response = await fetch(`${API_URL}/schools`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load schools');
+
+                const schools = await response.json();
+                const tbody = document.getElementById('schoolsList');
+                const noSchools = document.getElementById('noSchools');
+                const totalSchools = document.getElementById('totalSchools');
+
+                totalSchools.textContent = schools.length || '0';
+
+                if (schools.length === 0) {
+                    tbody.innerHTML = '';
+                    noSchools.style.display = 'block';
+                    return;
+                }
+
+                noSchools.style.display = 'none';
+                tbody.innerHTML = schools.map(school => `
+                    <tr>
+                        <td><strong>${school.name || 'N/A'}</strong></td>
+                        <td>${school.address || 'N/A'}</td>
+                        <td>${school.principalName || 'N/A'}</td>
+                        <td>${school.email || 'N/A'}</td>
+                        <td>
+                            <button style="padding: 5px 10px; background: var(--light); border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading schools:', error);
+                showActivity('Failed to load school data', 'error');
+            }
+        }
+
+        // ========== SYSTEM FUNCTIONS ==========
+        async function checkSystemHealth() {
+            try {
+                const response = await fetch('http://localhost:3000/health');
+                if (response.ok) {
+                    const health = await response.json();
+                    
+                    // Update status indicator
+                    const statusElement = document.getElementById('systemStatus');
+                    if (health.mongodb.connected) {
+                        statusElement.innerHTML = '<i class="fas fa-circle" style="color: var(--success);"></i> <span>All systems operational</span>';
+                        statusElement.className = 'status-indicator status-connected';
+                        document.getElementById('configStatus').style.background = '#d4edda';
+                        document.getElementById('configStatus').style.color = '#155724';
+                        document.getElementById('configStatus').textContent = 'Connected';
+                    } else {
+                        statusElement.innerHTML = '<i class="fas fa-circle" style="color: var(--danger);"></i> <span>Database connection issue</span>';
+                        statusElement.className = 'status-indicator status-disconnected';
+                        document.getElementById('configStatus').style.background = '#f8d7da';
+                        document.getElementById('configStatus').style.color = '#721c24';
+                        document.getElementById('configStatus').textContent = 'Disconnected';
+                    }
+                    
+                    // Update progress bars
+                    document.getElementById('apiBar').style.width = '100%';
+                    document.getElementById('apiStatus').textContent = 'Connected';
+                    document.getElementById('apiStatus').style.color = 'var(--success)';
+                    
+                    document.getElementById('dbBar').style.width = health.mongodb.connected ? '100%' : '30%';
+                    document.getElementById('dbConnectionStatus').textContent = health.mongodb.connected ? 'Connected' : 'Limited';
+                    document.getElementById('dbConnectionStatus').style.color = health.mongodb.connected ? 'var(--success)' : 'var(--danger)';
+                    
+                    document.getElementById('performanceBar').style.width = '85%';
+                    document.getElementById('performanceStatus').textContent = 'Optimal';
+                    document.getElementById('performanceStatus').style.color = 'var(--success)';
+                }
+            } catch (error) {
+                console.error('Health check failed:', error);
+                document.getElementById('systemStatus').innerHTML = '<i class="fas fa-circle" style="color: var(--danger);"></i> <span>Connection error</span>';
+            }
+        }
+
+        function updateReportSection() {
+            document.getElementById('reportLastUpdated').textContent = new Date().toLocaleTimeString();
+        }
+
+        function updateSystemInfo() {
+            document.getElementById('nodeVersion').textContent = '18.20.8';
+            document.getElementById('serverUptime').textContent = '24 hours';
+            document.getElementById('lastSync').textContent = new Date().toLocaleTimeString();
+        }
+
+        function testDatabaseConnection() {
+            showActivity('Testing database connection...', 'system');
+            setTimeout(() => {
+                checkSystemHealth();
+                showActivity('Database connection test completed', 'system');
+            }, 1500);
+        }
+
+        function reconnectDatabase() {
+            showActivity('Attempting to reconnect database...', 'system');
+            setTimeout(() => {
+                checkSystemHealth();
+                showActivity('Database reconnection attempt completed', 'system');
+            }, 2000);
+        }
+
+        function generateReport() {
+            showActivity('Generating system report...', 'system');
+            setTimeout(() => {
+                alert('Report generated successfully. This is a demonstration - in production, this would download a PDF/Excel file.');
+                showActivity('System report generated', 'success');
+            }, 1500);
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `alert alert-${type}`;
+            element.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function showActivity(message, type) {
+            const activityLog = document.getElementById('activityLog');
+            const time = new Date().toLocaleTimeString();
+            const status = type === 'error' ? 'Failed' : type === 'success' ? 'Completed' : 'In Progress';
+            const color = type === 'error' ? 'var(--danger)' : type === 'success' ? 'var(--success)' : 'var(--warning)';
+            
+            activityLog.innerHTML = `
+                <tr>
+                    <td>${time}</td>
+                    <td>${message}</td>
+                    <td>${currentUser.username || 'System'}</td>
+                    <td><span style="color: ${color};">${status}</span></td>
+                </tr>
+            ` + activityLog.innerHTML;
+            
+            // Keep only last 10 activities
+            const rows = activityLog.getElementsByTagName('tr');
+            if (rows.length > 10) {
+                activityLog.removeChild(rows[rows.length - 1]);
+            }
+        }
+
+        // ========== INITIALIZATION ==========
+        window.onload = function() {
+            // Check if already logged in
+            if (token && currentUser.username) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').style.display = 'block';
+                document.getElementById('userName').textContent = currentUser.username;
+                document.getElementById('userRole').textContent = 'Administrator';
+                loadDashboard();
+            }
+
+            // Set up enter key for login
+            document.getElementById('password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') login();
+            });
+
+            // Set up enter key for forms
+            document.getElementById('studentName').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addStudent();
+            });
+
+            document.getElementById('schoolName').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addSchool();
+            });
+
+            // Initial system check
+            setTimeout(checkSystemHealth, 1000);
+        };
+    </script>
+</body>
+</html>
