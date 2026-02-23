@@ -46,32 +46,85 @@ const App = () => {
   const Layout = ({ children }) => {
     const location = useLocation();
 
+    const navItems = [
+      { path: '/', label: 'Dashboard', icon: '📊' },
+      { path: '/schools', label: 'Schools', icon: '🏫' },
+    ];
+
     return (
-      <div className="flex min-h-screen bg-slate-50">
-        <aside className="w-64 bg-slate-900 text-white flex flex-col fixed h-full">
-          <div className="p-6 text-xl font-bold tracking-tight border-b border-slate-800">
-            School MIS
+      <div className="flex min-h-screen bg-slate-50 font-sans">
+        {/* Sidebar */}
+        <aside className="w-72 bg-slate-900 text-white flex flex-col fixed h-full shadow-2xl z-20">
+          <div className="p-8 flex items-center gap-3 border-b border-slate-800/50">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-xl shadow-lg shadow-blue-500/20">
+              🎓
+            </div>
+            <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+              School MIS
+            </span>
           </div>
-          <nav className="flex-1 px-4 py-6 space-y-1">
-            <Link to="/" className={`flex items-center px-4 py-3 rounded-md transition-colors ${location.pathname === '/' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
-              Dashboard
-            </Link>
-            <Link to="/schools" className={`flex items-center px-4 py-3 rounded-md transition-colors ${location.pathname.startsWith('/schools') ? 'bg-slate-800 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
-              Schools
-            </Link>
+
+          <nav className="flex-1 px-4 py-8 space-y-2">
+            {navItems.map((item) => {
+              const isActive = item.path === '/'
+                ? location.pathname === '/'
+                : location.pathname.startsWith(item.path);
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${isActive
+                    ? 'bg-blue-600 shadow-lg shadow-blue-600/20 text-white'
+                    : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+                    }`}
+                >
+                  <span className={`text-xl transition-transform group-hover:scale-110 ${isActive ? 'opacity-100' : 'opacity-70'}`}>
+                    {item.icon}
+                  </span>
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
           </nav>
-          <div className="p-4 border-t border-slate-800">
+
+          <div className="p-6 border-t border-slate-800/50">
             <button
               onClick={handleLogout}
-              className="flex items-center w-full px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
+              className="flex items-center gap-3 w-full px-4 py-3.5 text-slate-400 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-all duration-200 group"
             >
-              Logout
+              <span className="text-xl group-hover:rotate-12 transition-transform">🚪</span>
+              <span className="font-medium">Logout</span>
             </button>
+            <div className="mt-6 px-4 py-4 bg-slate-800/30 rounded-2xl border border-slate-800/50">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-xs font-bold font-sans">
+                  {user.username?.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold truncate">{user.username}</p>
+                  <p className="text-xs text-slate-500 truncate">Administrator</p>
+                </div>
+              </div>
+            </div>
           </div>
         </aside>
-        <main className="flex-1 ml-64 p-8">
-          <div className="max-w-7xl mx-auto">
-            {children}
+
+        {/* Main Content */}
+        <main className="flex-1 ml-72 min-h-screen relative">
+          <header className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-md px-8 py-4 flex justify-between items-center border-b border-slate-200/50">
+            <div className="text-sm font-medium text-slate-500 italic">
+              Welcome back, <span className="text-blue-600 font-bold">@{user.username}</span>
+            </div>
+            <div className="flex items-center gap-4 text-xs font-medium text-slate-400">
+              <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+            </div>
+          </header>
+
+          <div className="p-10">
+            <div className="max-w-6xl mx-auto">
+              {children}
+            </div>
           </div>
         </main>
       </div>

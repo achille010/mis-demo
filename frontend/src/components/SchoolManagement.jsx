@@ -60,11 +60,17 @@ const SchoolManagement = () => {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-slate-900">School Management</h1>
+        <div className="space-y-10 pb-20">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">School Management</h1>
+                    <p className="text-slate-500 mt-1 font-medium italic">Register and oversee educational institutions</p>
+                </div>
                 <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                    className={`flex items-center gap-2 font-bold py-3.5 px-8 rounded-2xl transition-all duration-300 shadow-lg ${showForm
+                        ? 'bg-slate-100 text-slate-600 hover:bg-slate-200 shadow-slate-200/20'
+                        : 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/20 active:scale-[0.98]'
+                        }`}
                     onClick={() => {
                         if (showForm) {
                             setShowForm(false);
@@ -75,113 +81,146 @@ const SchoolManagement = () => {
                         }
                     }}
                 >
-                    {showForm ? 'Cancel' : '+ Add School'}
+                    {showForm ? 'Cancel Operation' : <span className="flex items-center gap-2"><span className="text-xl">➕</span> Add New School</span>}
                 </button>
             </div>
 
             {showForm && (
-                <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-                    <h2 className="text-lg font-semibold mb-4 text-slate-900">{editingId ? 'Edit Institution' : 'Register New Institution'}</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-slate-700">School Name</label>
+                <div className="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-xl relative overflow-hidden animate-fade-in">
+                    <div className="absolute top-0 left-0 w-2 h-full bg-blue-600"></div>
+                    <h2 className="text-2xl font-black mb-8 text-slate-900 tracking-tight flex items-center gap-3">
+                        <span className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg">📝</span>
+                        {editingId ? 'Update Institution Profile' : 'Register New Institution'}
+                    </h2>
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-bold ml-1 text-slate-700 uppercase tracking-wider text-[10px]">Institution Name</label>
                                 <input
                                     type="text"
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    placeholder="e.g. Saint Peter High"
                                     required
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-slate-700">Principal Name</label>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-bold ml-1 text-slate-700 uppercase tracking-wider text-[10px]">Principal Name</label>
                                 <input
                                     type="text"
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium"
                                     value={formData.principalName}
                                     onChange={(e) => setFormData({ ...formData, principalName: e.target.value })}
+                                    placeholder="Full legal name"
                                     required
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-slate-700">Email Address</label>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-bold ml-1 text-slate-700 uppercase tracking-wider text-[10px]">Official Email</label>
                                 <input
                                     type="email"
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    placeholder="contact@school.edu"
                                     required
                                 />
                             </div>
                         </div>
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium mb-1 text-slate-700">Physical Address</label>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-bold ml-1 text-slate-700 uppercase tracking-wider text-[10px]">Physical Address</label>
                             <input
                                 type="text"
-                                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium"
                                 value={formData.address}
                                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                placeholder="Complete street address, city, and zip"
                                 required
                             />
                         </div>
-                        <div className="flex gap-3 mt-6">
-                            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
-                                {editingId ? 'Update School' : 'Save School'}
+                        <div className="flex gap-4 pt-4">
+                            <button type="submit" className="bg-slate-900 text-white font-bold py-4 px-10 rounded-2xl hover:bg-slate-800 transition-all shadow-lg active:scale-[0.98]">
+                                {editingId ? 'Apply Changes' : 'Confirm Registration'}
                             </button>
                             <button
                                 type="button"
-                                className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-6 rounded-md transition-colors"
+                                className="bg-white text-slate-500 font-bold py-4 px-10 rounded-2xl border border-slate-200 hover:bg-slate-50 transition-all"
                                 onClick={() => {
                                     setShowForm(false);
                                     setEditingId(null);
                                     setFormData({ name: '', address: '', principalName: '', email: '' });
                                 }}
                             >
-                                Cancel
+                                Discard
                             </button>
                         </div>
                     </form>
                 </div>
             )}
 
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse text-left">
                         <thead>
-                            <tr className="bg-slate-50 border-bottom border-slate-200">
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Institution Name</th>
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Principal</th>
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Email</th>
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Address</th>
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                            <tr className="bg-slate-50/50 border-b border-slate-200">
+                                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Institution</th>
+                                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Leadership</th>
+                                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Contact</th>
+                                <th className="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-200">
+                        <tbody className="divide-y divide-slate-100">
                             {loading ? (
-                                <tr><td colSpan="5" className="px-6 py-8 text-center text-slate-500">Loading...</td></tr>
+                                <tr>
+                                    <td colSpan="4" className="px-8 py-20 text-center">
+                                        <div className="flex flex-col items-center gap-4">
+                                            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                                            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Syncing Database...</p>
+                                        </div>
+                                    </td>
+                                </tr>
                             ) : schools.length === 0 ? (
-                                <tr><td colSpan="5" className="px-6 py-8 text-center text-slate-400">No schools registered.</td></tr>
+                                <tr>
+                                    <td colSpan="4" className="px-8 py-20 text-center">
+                                        <div className="text-6xl mb-4 grayscale opacity-20">📂</div>
+                                        <p className="text-slate-400 font-medium">No institutions registered yet.</p>
+                                    </td>
+                                </tr>
                             ) : (
                                 schools.map((school) => (
-                                    <tr key={school._id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4 font-semibold text-slate-900">{school.name}</td>
-                                        <td className="px-6 py-4 text-slate-700">{school.principalName}</td>
-                                        <td className="px-6 py-4 text-slate-700">{school.email}</td>
-                                        <td className="px-6 py-4 text-slate-700">{school.address}</td>
-                                        <td className="px-6 py-4 text-right space-x-3">
-                                            <button
-                                                onClick={() => handleEdit(school)}
-                                                className="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
-                                            >
-                                                Edit
-                                            </button>
-                                            <Link
-                                                to={`/schools/${school._id}/students`}
-                                                className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
-                                            >
-                                                Manage Students
-                                            </Link>
+                                    <tr key={school._id} className="group hover:bg-slate-50/50 transition-all duration-200">
+                                        <td className="px-8 py-6">
+                                            <div className="font-bold text-slate-900 text-lg group-hover:text-blue-600 transition-colors">{school.name}</div>
+                                            <div className="text-xs text-slate-400 font-medium mt-1 truncate max-w-xs flex items-center gap-1.5">
+                                                <span>📍</span> {school.address}
+                                            </div>
+                                        </td>
+                                        <td className="px-8 py-6">
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full text-xs font-bold text-slate-700">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                                {school.principalName}
+                                            </div>
+                                        </td>
+                                        <td className="px-8 py-6">
+                                            <div className="text-sm font-medium text-slate-600">{school.email}</div>
+                                        </td>
+                                        <td className="px-8 py-6 text-right">
+                                            <div className="flex justify-end gap-3 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+                                                <button
+                                                    onClick={() => handleEdit(school)}
+                                                    className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                                                    title="Edit School"
+                                                >
+                                                    <span className="text-lg">✏️</span>
+                                                </button>
+                                                <Link
+                                                    to={`/schools/${school._id}/students`}
+                                                    className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-all shadow-lg shadow-slate-900/10 active:scale-[0.98]"
+                                                >
+                                                    Manage Students
+                                                </Link>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
