@@ -23,32 +23,33 @@ const Dashboard = ({ user }) => {
     }, []);
 
     return (
-        <div>
-            <div className="content-header">
-                <h1 className="title">System Dashboard</h1>
-                <div style={{ fontSize: '0.875rem', color: stats.mongoStatus === 'connected' ? 'var(--success)' : 'var(--danger)', fontWeight: '600' }}>
-                    ● Database {stats.mongoStatus === 'connected' ? 'Connected' : 'Disconnected'}
+        <div className="space-y-8">
+            <div className="flex justify-between items-center">
+                <h1 className="text-2xl font-bold text-slate-900">System Dashboard</h1>
+                <div className={`text-sm font-semibold flex items-center gap-2 ${stats.mongoStatus === 'connected' ? 'text-green-600' : 'text-red-600'}`}>
+                    <span className={`w-2 h-2 rounded-full ${stats.mongoStatus === 'connected' ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                    Database {stats.mongoStatus === 'connected' ? 'Connected' : 'Disconnected'}
                 </div>
             </div>
 
-            <div className="stats-grid">
-                <div className="stat-card">
-                    <div className="stat-label">Total Students</div>
-                    <div className="stat-value">{loading ? '...' : stats.students}</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                    <div className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Students</div>
+                    <div className="text-3xl font-bold mt-2 text-slate-900">{loading ? '...' : stats.students}</div>
                 </div>
-                <div className="stat-card">
-                    <div className="stat-label">Total Schools</div>
-                    <div className="stat-value">{loading ? '...' : stats.schools}</div>
+                <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                    <div className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Schools</div>
+                    <div className="text-3xl font-bold mt-2 text-slate-900">{loading ? '...' : stats.schools}</div>
                 </div>
-                <div className="stat-card">
-                    <div className="stat-label">System Mode</div>
-                    <div className="stat-value" style={{ fontSize: '1.25rem' }}>{stats.source || 'Standard'}</div>
+                <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                    <div className="text-sm font-medium text-slate-500 uppercase tracking-wider">System Mode</div>
+                    <div className="text-xl font-bold mt-2 text-blue-600">{stats.source || 'Standard'}</div>
                 </div>
             </div>
 
-            <div className="card" style={{ padding: '1.5rem' }}>
-                <h2 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem' }}>Welcome, {user.username}</h2>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+            <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                <h2 className="text-lg font-semibold mb-2 text-slate-900">Welcome, {user.username}</h2>
+                <p className="text-slate-600 text-sm">
                     You are logged in as an Administrator. Use the sidebar to manage students and schools.
                 </p>
             </div>

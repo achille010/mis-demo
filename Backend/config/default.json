@@ -1,5 +1,5 @@
 ﻿{
-  "mongoURI": "mongodb://localhost:27017/school-mis",
+  "mongoURI": "mongodb://localhost:27017/mis-demo",
   "jwtSecret": "school-mis-secret-key-change-this",
   "jwtExpiration": "24h",
   "server": {
