@@ -82,18 +82,25 @@ const StudentManagement = () => {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col gap-2">
-                <Link to="/schools" className="text-sm text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
-                    Back to Schools
+        <div className="space-y-10 pb-20">
+            <div className="flex flex-col gap-6">
+                <Link to="/schools" className="group inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-blue-600 transition-all">
+                    <span className="group-hover:-translate-x-1 transition-transform">⬅️</span> Back to Institutions
                 </Link>
-                <div className="flex justify-between items-center mt-2">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">Student Management</h1>
-                        {school && <p className="text-slate-500 text-sm">Managing students for <span className="font-semibold text-slate-700">{school.name}</span></p>}
+                        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Student Management</h1>
+                        {school && (
+                            <p className="text-slate-500 mt-1 font-medium italic">
+                                Academic records for <span className="text-blue-600 font-bold not-italic underline decoration-blue-200 decoration-2 underline-offset-4">{school.name}</span>
+                            </p>
+                        )}
                     </div>
                     <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                        className={`flex items-center gap-2 font-bold py-3.5 px-8 rounded-2xl transition-all duration-300 shadow-lg ${showForm
+                            ? 'bg-slate-100 text-slate-600 hover:bg-slate-200 shadow-slate-200/20'
+                            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/20 active:scale-[0.98]'
+                            }`}
                         onClick={() => {
                             if (showForm) {
                                 setShowForm(false);
@@ -104,96 +111,124 @@ const StudentManagement = () => {
                             }
                         }}
                     >
-                        {showForm ? 'Cancel' : '+ Add Student'}
+                        {showForm ? 'Cancel Operation' : <span className="flex items-center gap-2"><span className="text-xl">➕</span> Add New Student</span>}
                     </button>
                 </div>
             </div>
 
             {showForm && (
-                <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-                    <h2 className="text-lg font-semibold mb-4 text-slate-900">{editingId ? 'Edit Student' : 'Register New Student'}</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-slate-700">Full Name</label>
+                <div className="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-xl relative overflow-hidden animate-fade-in border-l-4 border-l-blue-600">
+                    <h2 className="text-2xl font-black mb-8 text-slate-900 tracking-tight flex items-center gap-3">
+                        <span className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg">📁</span>
+                        {editingId ? 'Edit Student Profile' : 'Enroll New Student'}
+                    </h2>
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-bold ml-1 text-slate-700 uppercase tracking-wider text-[10px]">Full Legal Name</label>
                                 <input
                                     type="text"
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    placeholder="e.g. Jane Doe"
                                     required
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-slate-700">Email Address</label>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-bold ml-1 text-slate-700 uppercase tracking-wider text-[10px]">Portal Email</label>
                                 <input
                                     type="email"
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    placeholder="student@school.edu"
                                     required
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-slate-700">Admission Number</label>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-bold ml-1 text-slate-700 uppercase tracking-wider text-[10px]">Admission Number</label>
                                 <input
                                     type="text"
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium"
                                     value={formData.admissionNumber}
                                     onChange={(e) => setFormData({ ...formData, admissionNumber: e.target.value })}
+                                    placeholder="e.g. 2024-ADM-001"
                                     required
                                 />
                             </div>
                         </div>
-                        <div className="flex gap-3 mt-6">
-                            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
-                                {editingId ? 'Update Student' : 'Save Student'}
+                        <div className="flex gap-4 pt-4">
+                            <button type="submit" className="bg-slate-900 text-white font-bold py-4 px-10 rounded-2xl hover:bg-slate-800 transition-all shadow-lg active:scale-[0.98]">
+                                {editingId ? 'Save Profile' : 'Complete Enrollment'}
                             </button>
                             <button
                                 type="button"
-                                className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-6 rounded-md transition-colors"
+                                className="bg-white text-slate-500 font-bold py-4 px-10 rounded-2xl border border-slate-200 hover:bg-slate-50 transition-all"
                                 onClick={() => {
                                     setShowForm(false);
                                     setEditingId(null);
                                     setFormData({ name: '', email: '', admissionNumber: '' });
                                 }}
                             >
-                                Cancel
+                                Discard
                             </button>
                         </div>
                     </form>
                 </div>
             )}
 
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse text-left">
                         <thead>
-                            <tr className="bg-slate-50 border-bottom border-slate-200">
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Admission No</th>
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Full Name</th>
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Email</th>
-                                <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                            <tr className="bg-slate-50/50 border-b border-slate-200">
+                                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Admission ID</th>
+                                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Student Name</th>
+                                <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Primary Email</th>
+                                <th className="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-200">
+                        <tbody className="divide-y divide-slate-100">
                             {loading ? (
-                                <tr><td colSpan="4" className="px-6 py-8 text-center text-slate-500">Loading...</td></tr>
+                                <tr>
+                                    <td colSpan="4" className="px-8 py-20 text-center">
+                                        <div className="flex flex-col items-center gap-4">
+                                            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                                            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Accessing Records...</p>
+                                        </div>
+                                    </td>
+                                </tr>
                             ) : students.length === 0 ? (
-                                <tr><td colSpan="4" className="px-6 py-8 text-center text-slate-400">No students registered.</td></tr>
+                                <tr>
+                                    <td colSpan="4" className="px-8 py-20 text-center">
+                                        <div className="text-6xl mb-4 grayscale opacity-20">🎓</div>
+                                        <p className="text-slate-400 font-medium">No students enrolled in this institution.</p>
+                                    </td>
+                                </tr>
                             ) : (
                                 students.map((student) => (
-                                    <tr key={student._id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4 font-semibold text-slate-900">{student.admissionNumber}</td>
-                                        <td className="px-6 py-4 text-slate-700">{student.name}</td>
-                                        <td className="px-6 py-4 text-slate-700">{student.email}</td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => handleEdit(student)}
-                                                className="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
-                                            >
-                                                Edit
-                                            </button>
+                                    <tr key={student._id} className="group hover:bg-slate-50/50 transition-all duration-200">
+                                        <td className="px-8 py-6">
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full text-[10px] font-black text-blue-700 uppercase tracking-wider">
+                                                {student.admissionNumber}
+                                            </div>
+                                        </td>
+                                        <td className="px-8 py-6 font-bold text-slate-900 text-lg group-hover:text-blue-600 transition-colors">
+                                            {student.name}
+                                        </td>
+                                        <td className="px-8 py-6 text-sm font-medium text-slate-600">
+                                            {student.email}
+                                        </td>
+                                        <td className="px-8 py-6 text-right">
+                                            <div className="flex justify-end gap-3 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+                                                <button
+                                                    onClick={() => handleEdit(student)}
+                                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-all active:scale-[0.98]"
+                                                >
+                                                    <span>✏️</span> Edit Profile
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
