@@ -4,13 +4,10 @@ const debug = require('debug')('app:database');
 
 const connectDB = async () => {
   try {
-    const dbURI = process.env.MONGODB_URI || (config.has('mongodb.uri') ? config.get('mongodb.uri') : 'mongodb://localhost:27017/school-mis');
-    const options = config.has('mongodb.options') ? config.get('mongodb.options') : {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    };
-    
-    await mongoose.connect(dbURI, options);
+    const dbURI = process.env.MONGODB_URI || (config.has('mongoURI') ? config.get('mongoURI') : 'mongodb://localhost:27017/mis-demo');
+
+    // Modern Mongoose (8.x+) doesn't require these options and will warn if they are used
+    await mongoose.connect(dbURI);
     debug(`MongoDB Connected: ${dbURI}`);
   } catch (error) {
     debug('MongoDB connection error:', error);
@@ -27,4 +24,3 @@ mongoose.connection.on('error', (error) => {
 });
 
 module.exports = connectDB;
-

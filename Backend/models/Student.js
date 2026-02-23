@@ -1,17 +1,12 @@
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
-  firstName: {
+  name: {
     type: String,
     required: true,
     trim: true
   },
-  lastName: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  studentId: {
+  admissionNumber: {
     type: String,
     required: true,
     unique: true,
@@ -40,12 +35,12 @@ const studentSchema = new mongoose.Schema({
   class: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Class',
-    required: true
+    required: false
   },
   level: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Level',
-    required: true
+    required: false
   },
   school: {
     type: mongoose.Schema.Types.ObjectId,

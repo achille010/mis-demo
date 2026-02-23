@@ -47,28 +47,32 @@ const App = () => {
     const location = useLocation();
 
     return (
-      <div className="app-layout">
-        <aside className="sidebar">
-          <div className="sidebar-header">
+      <div className="flex min-h-screen bg-slate-50">
+        <aside className="w-64 bg-slate-900 text-white flex flex-col fixed h-full">
+          <div className="p-6 text-xl font-bold tracking-tight border-b border-slate-800">
             School MIS
           </div>
-          <nav>
-            <Link to="/" className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}>
+          <nav className="flex-1 px-4 py-6 space-y-1">
+            <Link to="/" className={`flex items-center px-4 py-3 rounded-md transition-colors ${location.pathname === '/' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
               Dashboard
             </Link>
-            <Link to="/students" className={`nav-item ${location.pathname === '/students' ? 'active' : ''}`}>
-              Students
-            </Link>
-            <Link to="/schools" className={`nav-item ${location.pathname === '/schools' ? 'active' : ''}`}>
+            <Link to="/schools" className={`flex items-center px-4 py-3 rounded-md transition-colors ${location.pathname.startsWith('/schools') ? 'bg-slate-800 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
               Schools
             </Link>
-            <button onClick={handleLogout} className="nav-item" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}>
+          </nav>
+          <div className="p-4 border-t border-slate-800">
+            <button
+              onClick={handleLogout}
+              className="flex items-center w-full px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors"
+            >
               Logout
             </button>
-          </nav>
+          </div>
         </aside>
-        <main className="main-content">
-          {children}
+        <main className="flex-1 ml-64 p-8">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     );
@@ -87,17 +91,17 @@ const App = () => {
             </Layout>
           </PrivateRoute>
         } />
-        <Route path="/students" element={
-          <PrivateRoute>
-            <Layout>
-              <StudentManagement />
-            </Layout>
-          </PrivateRoute>
-        } />
         <Route path="/schools" element={
           <PrivateRoute>
             <Layout>
               <SchoolManagement />
+            </Layout>
+          </PrivateRoute>
+        } />
+        <Route path="/schools/:schoolId/students" element={
+          <PrivateRoute>
+            <Layout>
+              <StudentManagement />
             </Layout>
           </PrivateRoute>
         } />

@@ -34,46 +34,50 @@ const Login = ({ onLogin }) => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
-                <h1 className="auth-title">Welcome Back</h1>
-                <p className="auth-subtitle">Log in to manage your school system</p>
+        <div className="flex justify-center items-center min-h-screen p-6 bg-slate-50">
+            <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md border border-slate-200">
+                <h1 className="text-3xl font-bold mb-2 text-slate-900 text-center">Welcome Back</h1>
+                <p className="text-slate-500 text-center mb-8 text-sm">Log in to manage your school system</p>
 
                 {error && (
-                    <div style={{ padding: '0.75rem', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '0.5rem', marginBottom: '1.5rem', fontSize: '0.875rem', border: '1px solid #fecaca' }}>
+                    <div className="p-3 bg-red-100 text-red-600 rounded-md mb-6 text-sm border border-red-200">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label className="form-label">Username</label>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <label className="block text-sm font-medium mb-2 text-slate-700">Username</label>
                         <input
                             type="text"
-                            className="form-input"
+                            className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             placeholder="Enter username"
                             required
                         />
                     </div>
-                    <div className="form-group">
-                        <label className="form-label">Password</label>
+                    <div>
+                        <label className="block text-sm font-medium mb-2 text-slate-700">Password</label>
                         <input
                             type="password"
-                            className="form-input"
+                            className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter password"
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary" disabled={loading}>
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors disabled:bg-blue-400"
+                        disabled={loading}
+                    >
                         {loading ? 'Logging in...' : 'Sign In'}
                     </button>
                 </form>
 
-                <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
+                <div className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-500 text-center">
                     <strong>Demo credentials:</strong> admin / admin123
                 </div>
             </div>
